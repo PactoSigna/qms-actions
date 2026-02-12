@@ -1,0 +1,44 @@
+name: 'PactoSigna QMS Actions'
+description: 'Validate QMS & Device documents, check traceability, and build PDF exports'
+author: 'PactoSigna'
+
+branding:
+  icon: 'check-circle'
+  color: 'blue'
+
+inputs:
+  type:
+    description: 'Repository type: qms or device'
+    required: true
+  docs-path:
+    description: 'Path to documents directory'
+    required: false
+    default: 'docs/'
+  mode:
+    description: 'Run mode: pr (validate + comment) or release (build PDFs + attach)'
+    required: false
+    default: 'pr'
+  pactosigna-api-key:
+    description: 'PactoSigna API key for Part 11 features (signatures, audit, training)'
+    required: false
+  config-file:
+    description: 'Path to .qmsrc.yml config file'
+    required: false
+    default: '.qmsrc.yml'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.type }}
+    - ${{ inputs.docs-path }}
+    - ${{ inputs.mode }}
+    - ${{ inputs.pactosigna-api-key }}
+    - ${{ inputs.config-file }}
+
+  env:
+    INPUT_TYPE: ${{ inputs.type }}
+    INPUT_DOCS_PATH: ${{ inputs.docs-path }}
+    INPUT_MODE: ${{ inputs.mode }}
+    INPUT_PACTOSIGNA_API_KEY: ${{ inputs.pactosigna-api-key }}
+    INPUT_CONFIG_FILE: ${{ inputs.config-file }}

@@ -1,0 +1,36 @@
+{
+  "name": "@pactosigna/qms-actions",
+  "version": "0.1.0",
+  "description": "GitHub Action for QMS & Device document validation, traceability, and PDF export",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --target node20 --clean",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/ tests/",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.0",
+    "@sparticuz/chromium": "^143.0.4",
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.0",
+    "puppeteer-core": "^24.0.0",
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "prettier": "^3.4.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
