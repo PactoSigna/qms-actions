@@ -1,0 +1,49 @@
+# Example workflow for Device repositories (user needs, requirements, risks, tests)
+# Copy this file to .github/workflows/device-validate.yml in your device repo
+
+name: Device Validation
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: PactoSigna/qms-actions@v1
+        with:
+          type: device
+          mode: pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  export:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: PactoSigna/qms-actions@v1
+        with:
+          type: device
+          mode: release
+          # Uncomment to enable Part 11 features (signatures, audit trails):
+          # pactosigna-api-key: ${{ secrets.PACTOSIGNA_API_KEY }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
