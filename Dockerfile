@@ -24,9 +24,10 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /action
 
-COPY package.json pnpm-lock.yaml ./
-RUN npm i -g pnpm && pnpm install --prod --frozen-lockfile
-
-COPY dist/ ./dist/
+COPY package.json pnpm-lock.yaml tsconfig.json ./
+COPY src/ ./src/
+RUN npm i -g pnpm && pnpm install --frozen-lockfile \
+    && pnpm build \
+    && pnpm prune --prod
 
 ENTRYPOINT ["node", "dist/index.js"]
